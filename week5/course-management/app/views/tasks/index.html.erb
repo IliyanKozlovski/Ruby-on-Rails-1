@@ -1,0 +1,61 @@
+<div class="container">
+	<div class="jumbotron">
+	  <div class="container">
+	   	<div class="col-md-8">
+	  		<h1 class="text-center"><%= @lecture.name %> - tasks</h1>
+	  	</div>
+	  </div>
+	</div>
+	
+  <div class="container">
+  	<table class="table table-striped">
+  		<tr>
+  			<th class="col-md-1">#</th>
+  			<th class="col-md-3">Task</th>
+  			<th class="col-md-4">Description</th>
+  			<th class="col-md-1">Edit</th>
+  			<th class="col-md-1">Delete</th>
+  			<th class="col-md-2">Solutions</th>
+  		</tr>
+
+  		<% @tasks.each do |task|%>
+	  	<tr>
+	  		<td class="col-md-1">
+					<div >
+		  			<%= task.id %>
+					</div>
+				</td>
+				<td class="col-md-3">
+					<div>
+	  				<%= link_to task.name, lecture_task_path(@lecture, task) %>
+					</div>
+				</td>
+				<td class="col-md-4">
+					<div>
+						<%= task.description %>
+					</div>
+				</td>
+				<td class="col-md-1">
+					<div>
+						<%= link_to edit_lecture_task_path(@lecture, task) do %>
+						<span class="glyphicon glyphicon-pencil"></span>
+						<% end %>
+					</div>
+				</td>
+				<td class="col-md-1">
+					<div>
+					<%= link_to lecture_task_path(@lecture, task), method: :delete, data: { confirm: "You sure?" } do %>
+						<span class="glyphicon glyphicon-remove"></span>
+					<% end %>
+					</div>
+				</td>
+				<td class="col-md-2">
+					<%= link_to "Solutions", lecture_task_solutions_path(@lecture, task) %>
+				</td>
+			</tr>
+			<% end %>
+		</table>
+
+	<div><%= link_to "Add new task",new_lecture_task_path, class: 'btn btn-primary' %></div>
+
+</div>

@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="jumbotron">
+  	<div class="container">
+  		<h2>Lectures:</h2>
+  	</div>
+  </div>
+
+  <table class="table table-striped">
+    <tr>
+      <th class="col-md-1">#</th>
+      <th class="col-md-2">Name</th>
+      <th class="col-md-2">Tasks</th>
+      <th class="col-md-1">Edit</th>
+      <th class="col-md-1">Delete</th>
+    </tr>
+  	<% @lectures.each do |lecture| %>
+      <tr>
+      	<td class="col-md-1">
+          <%= lecture.id %>
+      	</td>
+        <td class="col-md-2">
+          <%= link_to lecture.name, lecture_path(lecture) %>
+        </td>
+        <td class="col-md-1">
+          <%= link_to 'Tasks', lecture_tasks_path(lecture) %>
+        </td>
+        <td class="col-md-1">
+          <%= link_to edit_lecture_path(lecture) do %>
+            <span class="glyphicon glyphicon-pencil"></span>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to lecture, :confirm => "Are you sure?", :method => :delete do %>
+            <span class="glyphicon glyphicon-remove"></span>
+          <% end %>
+        </td>    	
+      </tr>
+  	<% end %>
+  </table>
+  <p><%= link_to "Add new lectury",new_lecture_path, class: 'btn btn-primary' %></p>
+</div>

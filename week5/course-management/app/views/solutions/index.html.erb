@@ -1,0 +1,59 @@
+<div class="container">
+	<div class="jumbotron">
+	  <div class="container">
+	   	<h2 class="text-center"><%= @lecture.name %> - <%= @task.name %> <br>Solutions:</h2>
+	  </div>
+	</div>
+	
+  <div class="container">
+  	<table class="table table-striped">
+  		<tr>
+  			<th class="col-md-1">#</th>
+  			<th class="col-md-3">Student</th>
+  			<th class="col-md-4">Solution</th>
+  			<th class="col-md-1">Edit</th>
+  			<th class="col-md-1">Delete</th>
+  			<th class="col-md-2">Submited</th>
+  		</tr>
+
+  		<% @solutions.each do |solution|%>
+	  	<tr>
+	  		<td class="col-md-1">
+					<div >
+		  			<%= solution.id %>
+					</div>
+				</td>
+				<td class="col-md-3">
+					<div>
+	  				<%= link_to solution.name, lecture_task_solution_path(@lecture, @task, solution) %>
+					</div>
+				</td>
+				<td class="col-md-4">
+					<div>
+						<%= solution.description %>
+					</div>
+				</td>
+				<td class="col-md-1">
+					<div>
+						<%= link_to edit_lecture_task_solution_path(@lecture, @task, solution) do %>
+						<span class="glyphicon glyphicon-pencil"></span>
+						<% end %>
+					</div>
+				</td>
+				<td class="col-md-1">
+					<div>
+					<%= link_to lecture_task_solution_path(@lecture, @task, solution), method: :delete, data: { confirm: "You sure?" } do %>
+						<span class="glyphicon glyphicon-remove"></span>
+					<% end %>
+					</div>
+				</td>
+				<td class="col-md-2">
+					<%= time_ago_in_words(solution.created_at) %> ago
+				</td>
+			</tr>
+			<% end %>
+		</table>
+
+	<div><%= link_to "Add new solution",new_lecture_task_solution_path, class: 'btn btn-primary' %></div>
+
+</div>

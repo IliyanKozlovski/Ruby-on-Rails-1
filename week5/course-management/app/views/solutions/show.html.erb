@@ -1,0 +1,14 @@
+<div class="container">
+	<h2 class="title">
+		Submited by: <%= @solution.name %>
+	
+	</h2>
+		
+	<div class="rich-text">
+			<p> Description: <%= @solution.description %></p>
+				<small>Submited <%= time_ago_in_words(@solution.created_at) %> ago</small>
+	</div>
+
+	<%= link_to 'Return to solutions', lecture_task_solutions_path, class: 'btn btn-primary' %>
+		
+</div>
