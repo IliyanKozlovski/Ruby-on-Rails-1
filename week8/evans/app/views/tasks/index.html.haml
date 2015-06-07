@@ -1,0 +1,12 @@
+#tasks
+  %h1 Задачи
+  = admin_only do
+    = link_to 'Нова', new_task_path, class: :action
+
+  %ul
+    - @tasks.each do |task|
+      %li{class: (:hidden if task.hidden?)}
+        = link_to task.name, task
+        - if task.hidden?
+          (скрита)
+        (краен срок: #{l(task.closes_at)})

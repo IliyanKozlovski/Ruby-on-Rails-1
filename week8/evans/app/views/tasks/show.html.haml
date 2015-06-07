@@ -1,0 +1,29 @@
+.task
+  %h1= @task.name
+
+  %p
+    = admin_only do
+      = link_to 'Редактирай', edit_task_path(@task), class: :action
+    = authenticated_only do
+      = link_to 'Предай решение', task_my_solution_path(@task), class: :action
+      - if @current_user_solution
+        = link_to 'Коментари към моето решение', @current_user_solution, class: :action
+
+  - if admin? or @task.closed?
+    %p= link_to 'Предадени решения', task_solutions_path(@task)
+
+  %dl
+    %dt Краен срок:
+    %dd
+      = l @task.closes_at
+    %dt Точки:
+    %dd
+      = @task.max_points
+
+  - if @task.closed?
+    %p.closed Срокът за предаване на решения е отминал
+
+  = markup @task.description, auto_link: false
+
+  - if @task.has_restrictions?
+    = render 'restrictions', restrictions: @task.restrictions_hash

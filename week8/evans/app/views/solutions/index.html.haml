@@ -1,0 +1,34 @@
+%h1 Решения на #{@task.name}
+%p= link_to 'Към задачата', @task, class: :back
+
+= admin_only do
+  - if @task.manually_scored?
+    %p
+      %em Тази задача се оценява ръчно. #{link_to 'Започни проверяване', unscored_task_solutions_path(@task)}.
+  - elsif TaskCheckWorker.queued? @task.id
+    %p
+      %em
+        В момента тази задача се проверява. В случай, че твърде дълго не
+        се случи нищо, погледни #{link_to 'опашката', sidekiq_web_path}
+        за повече информация.
+  - else
+    = link_to 'Пусни тестовете', task_check_path(@task), method: :create, class: :action
+
+%p
+  %strong= @solutions.count
+  решения
+
+%table.solutions
+  %thead
+    %tr
+      %th.name Име
+      %th.points Точки
+      %th.results Изпълнение
+  %tbody
+    - @solutions.each do |solution|
+      %tr
+        %td.name= link_to solution.user_name, [@task, solution]
+        %td.points
+          - if show_results? @task
+            Точки: <span data-points>#{solution.total_points}</span> (<span data-adjustment>#{solution.adjustment}</span> добавка)
+        %td.results <span class="passed">Успешни тестове:</span> #{solution.passed_tests}<span class="failed">, Неуспешни тестове:</span> #{solution.failed_tests}<span class="lines">, Редове:</span> #{solution.rows}<span class="comments">, Коментари:</span> #{solution.comments.count}

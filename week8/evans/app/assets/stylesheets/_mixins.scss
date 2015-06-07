@@ -1,0 +1,67 @@
+@mixin button {
+  background-color: $button-color;
+  border: { style: solid; width: 1px; top-color: $light-border; right-color: $dark-border; bottom-color: $dark-border; left-color: $light-border; }
+  font: { family: $font-text; size: $font-normal; weight: bold; }
+  padding: 4px 8px;
+}
+
+@mixin replace-with-image($img, $width, $height) {
+  background: { image: image-url($img); repeat: no-repeat; }
+  overflow: hidden;
+  text: { align: left; indent: -9999px; }
+  width: $width;
+  height: $height;
+}
+
+@mixin monospace {
+  font-family: $font-monospace;
+  font-size: $font-monospace-size;
+}
+
+@mixin heading-1 { color: $title-color; font-family: $font-headings; font-size: $font-huge; line-height: $font-huge * 1.2; }
+@mixin heading-2 { color: $subtitle-color; font-family: $font-headings; font-size: $font-larger; }
+@mixin heading-3 { color: $subtitle-color; font-family: $font-headings; font-size: $font-large; }
+
+@mixin data-table {
+  border: { collapse: separate; spacing: 5px; }
+  margin: 20px 0;
+  width: 100%;
+
+  caption { color: #3371a3; font-size: $font-large; font-weight: bold; padding: 10px 0; text-align: left; }
+  thead th { background-color: #3371a3; color: white; font-weight: bold; text-align: left; }
+  th, td { padding: 8px 16px; vertical-align: middle; }
+  tr:nth-child(even) { background-color: #f0f0f0; }
+  td.no-records { text-align: center; }
+}
+
+@mixin action {
+  background-color: $action;
+  color: white;
+  display: inline-block;
+  padding: .35em 1em .3em;
+  border-radius: 4px;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: none;
+    background-color: $action-hover;
+  }
+}
+
+@mixin test-results {
+  ul li { background: { position: 0 0; repeat: no-repeat; } list-style: none; padding-left: 25px; }
+  ul li.test-points { background-image: image-url('icons/emoticon_grin.png'); }
+  ul li.bonus { background-image: image-url('icons/star.png'); }
+  ul li.penalty { background-image: image-url('icons/stop.png'); }
+  ul li.total-points { background-image: image-url('icons/bullet_go.png'); }
+  ul li.passed-tests { background-image: image-url('icons/flag_green.png'); }
+  ul li.failed-tests { background-image: image-url('icons/flag_red.png'); }
+  ul li.unchecked { background-image: image-url('icons/time.png'); }
+  ul li.correct { background-image: image-url('icons/tick.png'); }
+  ul li.incorrect { background-image: image-url('icons/cross.png'); }
+}
+
+@mixin markdown {
+  code { background-color: #f8f8ff; color: #444; padding: 1px 3px; border: 1px solid #dedede; border-radius: 2px; font-size: 12px !important; }
+  pre code { display: block; overflow-x: auto; }
+}

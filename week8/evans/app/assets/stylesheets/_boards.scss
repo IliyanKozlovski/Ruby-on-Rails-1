@@ -1,0 +1,15 @@
+ol.topic {
+  > li { @include contribution; }
+  .body p:first-child { margin-top: 0; }
+  pre code { overflow-x: auto; }
+}
+
+table.topics {
+  @include data-table;
+
+  time { display: block; }
+  td.last-reply { font-size: $font-small; }
+}
+
+.new-reply { @include content; }
+p.markdown-explanation { color: #999; font-style: italic; width: 650px; }

@@ -1,0 +1,45 @@
+.solution
+  %h1 Решение на #{@solution.task_name} от #{@solution.user_name}
+
+  %p= link_to 'Обратно към всички решения', task_solutions_path(@solution.task)
+  %p= link_to "Към профила на #{@solution.user_name}", @solution.user
+
+  - if show_results? @solution.task
+    .results
+      %h2 Резултати
+
+      %ul
+        %li.test-points= pluralize @solution.points, 'точка от тестове', 'точки от тестове'
+        - if @solution.adjustment >= 0
+          %li.bonus= pluralize @solution.adjustment, 'бонус точка', 'бонус точки'
+        - else
+          %li.penalty= pluralize @solution.adjustment.abs, 'отнета точка', 'отнети точки'
+        %li.total-points= pluralize @solution.total_points, 'точка общо', 'точки общо'
+
+      %ul
+        %li.passed-tests #{@solution.passed_tests} успешни тест(а)
+        %li.failed-tests #{@solution.failed_tests} неуспешни тест(а)
+
+  %h2 Код
+  = format_code @solution.code
+
+  - if show_results?(@solution.task) and @solution.log.present?
+    %h2 Лог от изпълнението
+    %pre.test-log(data-toggleable data-show-text="Покажи лога" data-hide-text="Скрий лога")= @solution.log
+
+  - if admin?
+    = render 'solutions/scoring', solution: @solution
+
+  %h2 История (#{pluralize @history.revisions_count, 'версия', 'версии'} и #{pluralize @history.comments_count, 'коментар', 'коментара'})
+  - @history.revisions.each do |revision|
+    %article.revision
+      %h3 #{@solution.user.first_name} обнови решението на #{l revision.created_at} (преди #{time_ago_in_words revision.created_at})
+
+      %div(data-toggleable data-show-text="Покажи кода" data-hide-text="Скрий кода")= format_code @history.code_for revision
+
+      - @history.comments(revision).each do |comment|
+        = contribution comment
+
+  - if @solution.commentable_by? current_user
+    = simple_form_for [@last_revision, Comment.new] do |form|
+      = render 'comments/form', form: form

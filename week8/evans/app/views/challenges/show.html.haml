@@ -1,0 +1,46 @@
+.challenge
+  %h1= @challenge.name
+
+  %p
+    = admin_only do
+      = link_to 'Редактирай', edit_challenge_path(@challenge), class: :action
+    = authenticated_only do
+      = link_to 'Моето решение', challenge_my_solution_path(@challenge), class: :action
+    = admin_only do
+      - unless ChallengeCheckWorker.queued? @challenge.id
+        = link_to 'Пусни тестовете', challenge_check_path(@challenge), method: :create, class: :action
+
+  - if ChallengeCheckWorker.queued? @challenge.id
+    %p
+      %em
+        В момента това предизвикателство се проверява. В случай, че твърде дълго не
+        се случи нищо, погледни #{link_to 'опашката', sidekiq_web_path}
+        за повече информация.
+
+  %dl
+    %dt Краен срок
+    %dd= l @challenge.closes_at
+
+  - if @challenge.closed?
+    %p.closed Срокът за предаване на решения е отминал
+
+  = markup @challenge.description, auto_link: false
+
+  - if @solutions
+    %h2 Решения
+    .solutions
+      - @solutions.each do |solution|
+        %article
+          %header
+            .thumbnail= link_to user_thumbnail(solution.user, :size80), solution.user
+            %ul.results
+              %li{class: challenge_solution_status(solution)}
+                = challenge_solution_status_text solution
+              %li.passed-tests #{solution.passed_tests} успешни тест(а)
+              %li.failed-tests #{solution.failed_tests} неуспешни тест(а)
+          = link_to solution.user.name, solution.user
+          .code{class: challenge_solution_status(solution)}= format_code solution.code
+
+          - if solution.log.present? and (@challenge.checked? or admin?)
+            .log
+              %pre.test-log(data-test-log)= solution.log

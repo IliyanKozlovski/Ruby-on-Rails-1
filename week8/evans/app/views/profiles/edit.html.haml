@@ -1,0 +1,41 @@
+%h1 Редакция на профил
+
+%p
+  = link_to 'Вижте публичния си профил &rarr;'.html_safe, user_path(current_user)
+
+= simple_form_for @user, url: profile_path, html: {method: :put, multipart: true} do |form|
+  %fieldset
+    %legend Снимка
+    %p
+      Форумите са много по-приятни, когато виждате лицата на участниците, а не всевъзможни аниме герои.
+      Ако ще качвате снимка, нека да бъде <strong>истинска и да се разпознавате ясно на нея.</strong>
+      Ще махаме останалите.
+    = user_thumbnail @user
+    - if @user.photo.present?
+      = form.input :remove_photo, as: :boolean, label: 'Изтрий снимката'
+      %p Или качи друга:
+      %p= form.file_field :photo
+    - else
+      %p Качи снимка:
+      %p= form.file_field :photo
+
+  %fieldset
+    %legend Малко лична информация за вас
+    = form.input :github, label: t('activerecord.attributes.user.github_html')
+    = form.input :twitter
+    = form.input :skype
+    = form.input :phone
+    = form.input :site
+    = form.input :about, input_html: {size: '50x5'}
+
+  %fieldset
+    %legend Известия по поща
+    = form.input :comment_notification
+
+  %fieldset
+    %legend Промяна на парола
+    %p Ако не искате да променяте паролата си, оставете долните полета празни:
+    = form.input :password
+    = form.input :password_confirmation
+
+  = form.button :submit, 'Запази'

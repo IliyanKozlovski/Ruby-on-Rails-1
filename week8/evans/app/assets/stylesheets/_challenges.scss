@@ -1,0 +1,24 @@
+#challenges {
+  @include content;
+
+  .hidden { color: $disabled; }
+}
+
+.challenge {
+  @include content;
+  p.closed { font-weight: bold; }
+
+  dl dt { display: block; float: left; font-weight: bold; width: 100px; }
+  dl dd { clear: right; margin: 5px 0; }
+}
+
+.challenge .solutions {
+  article { border-bottom: 1px solid $light-border; margin-bottom: 30px; overflow: hidden; padding-bottom: 30px; }
+  article .code { margin-top: 20px; }
+  article header { @include test-results; overflow: hidden; }
+  article header .thumbnail { float: left; width: 80px; }
+  article header .results { float: left; }
+  article .correct table { border: 1px solid #8d8; }
+  article .incorrect table { border: 1px solid #d88; }
+  article .log { margin: 20px 0 -10px 0; }
+}
